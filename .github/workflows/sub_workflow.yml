@@ -1,0 +1,27 @@
+name: "Sub workflow"
+on:
+  workflow_call:
+
+jobs:
+  test:
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Run"
+        run: |
+          echo "Hello, world! ${{ env.MY_SECRET }}"
+        env:
+          MY_SECRET: ${{ secrets.MY_SECRET }}
+
+  test_less_permissions:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Run"
+        run: |
+          echo "Hello, world! ${{ env.MY_SECRET }}"
+        env:
+          MY_SECRET: ${{ secrets.MY_SECRET }}
