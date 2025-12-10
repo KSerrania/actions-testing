@@ -28,3 +28,10 @@ jobs:
       - name: "Test"
         run: |
           echo "Hello, world!"
+
+  sub_workflow_inherit_secrets:
+    uses: ./.github/workflows/sub_workflow.yml
+    secrets: inherit
+
+  sub_workflow:
+    uses: ./.github/workflows/sub_workflow.yml
