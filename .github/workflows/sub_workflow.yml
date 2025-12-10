@@ -11,9 +11,9 @@ jobs:
     steps:
       - name: "Run"
         run: |
-          echo "Hello, world!"
-        with:
-          my_secret: ${{ secrets.MY_SECRET }}
+          echo "Hello, world! ${{ env.MY_SECRET }}"
+        env:
+          MY_SECRET: ${{ secrets.MY_SECRET }}
 
   test_less_permissions:
     permissions:
@@ -22,6 +22,6 @@ jobs:
     steps:
       - name: "Run"
         run: |
-          echo "Hello, world!"
-        with:
-          my_secret: ${{ secrets.MY_SECRET }}
+          echo "Hello, world! ${{ env.MY_SECRET }}"
+        env:
+          MY_SECRET: ${{ secrets.MY_SECRET }}
