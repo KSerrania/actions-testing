@@ -1,0 +1,15 @@
+name: "Release workflow"
+
+on:
+  release:
+    types: [published, created, edited, released]
+
+jobs:
+  print-secret:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print TEST_SECRET
+        env:
+          TEST_SECRET: ${{ secrets.TEST_SECRET }}
+        run: |
+          echo "TEST_SECRET: $TEST_SECRET"
