@@ -9,8 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: protected-main-env
     steps:
-      - name: Print TEST_SECRET
+      - name: Print secrets
         env:
           TEST_SECRET: ${{ secrets.TEST_SECRET }}
+          ENVIRONMENT_SECRET: ${{ secrets.ENVIRONMENT_SECRET }}
         run: |
           echo "TEST_SECRET: $TEST_SECRET"
+          echo "ENVIRONMENT_SECRET: $ENVIRONMENT_SECRET"
