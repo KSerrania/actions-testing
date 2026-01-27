@@ -4,11 +4,21 @@ on:
   release:
     types: [published, created, edited, released]
 
+permissions:
+  id-token: write
+
 jobs:
   print-secret:
     runs-on: ubuntu-latest
     environment: protected-main-env
     steps:
+      - name: Show OIDC claims
+        env:
+          AUDIENCE: "sts.amazonaws.com"
+        run: |
+          TOKEN_JSON=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=$AUDIENCE")
+          ID_TOKEN=$(echo "$TOKEN_JSON" | jq -r .value)
+          echo "$ID_TOKEN" | awk -F. '{print $2}' | base64 -d 2>/dev/null | jq -r
       - name: Print secrets
         env:
           TEST_SECRET: ${{ secrets.TEST_SECRET }}

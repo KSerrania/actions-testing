@@ -7,8 +7,16 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      id-token: write
     runs-on: ubuntu-latest
     steps:
+      - name: Show OIDC claims
+        env:
+          AUDIENCE: "sts.amazonaws.com"
+        run: |
+          TOKEN_JSON=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=$AUDIENCE")
+          ID_TOKEN=$(echo "$TOKEN_JSON" | jq -r .value)
+          echo "$ID_TOKEN" | awk -F. '{print $2}' | base64 -d 2>/dev/null | jq -r
       - name: "Run"
         run: |
           echo "Hello, world! ${{ env.MY_SECRET }}"
@@ -18,8 +26,16 @@ jobs:
   test_less_permissions:
     permissions:
       contents: read
+      id-token: write
     runs-on: ubuntu-latest
     steps:
+      - name: Show OIDC claims
+        env:
+          AUDIENCE: "sts.amazonaws.com"
+        run: |
+          TOKEN_JSON=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=$AUDIENCE")
+          ID_TOKEN=$(echo "$TOKEN_JSON" | jq -r .value)
+          echo "$ID_TOKEN" | awk -F. '{print $2}' | base64 -d 2>/dev/null | jq -r
       - name: "Run"
         run: |
           echo "Hello, world! ${{ env.MY_SECRET }}"
